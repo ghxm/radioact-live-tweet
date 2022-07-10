@@ -46,6 +46,7 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--station', type=str, help='only check these stations', default="chuntfm")
+    parser.add_argument('-o', '--offline', action="store_true", help='send tweet when station goes offline')
     parser.add_argument('-c', '--channel', type=str, help='only check these stations', default="live")
     parser.add_argument('-d', '--debug', action='store_true', help='debug mode')
 
@@ -73,6 +74,9 @@ def main():
 
     if state == config['DEFAULT']['last_tweeted']:
         print("State has not changed since last tweet")
+        sys.exit(1)
+    elif state == "offline" and not args.offline:
+        print("Station is offline, offline tweet option is not enabled")
         sys.exit(1)
 
     print('Tweeting: ' + str(state))

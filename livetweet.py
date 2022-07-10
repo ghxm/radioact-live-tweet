@@ -76,6 +76,9 @@ def main():
         print("State has not changed since last tweet")
         sys.exit(1)
     elif state == "offline" and not args.offline:
+        config['DEFAULT']['last_tweeted'] = state
+        with open(configpath[0], 'w') as configfile:
+            config.write(configfile)
         print("Station is offline, offline tweet option is not enabled")
         sys.exit(1)
 

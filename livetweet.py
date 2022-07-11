@@ -7,6 +7,8 @@ import os
 import json
 import re
 import sys
+import wombot_fortunes
+import random
 
 if sys.version_info[0] > 2:
     import urllib.request as urlreq
@@ -26,12 +28,15 @@ except:
     sys.exit(1)
     print("Authentication Error")
 
-def tweet(station_name, stream_url, state):
+def tweet(station_name, stream_url, state, fortune = False):
 
     if state == "online":
         text = "{station_name} is live!\nIf you're listening tune in: {stream_url}\n\nHop in the chat: https://chuntoo.chatango.com/".format(station_name = station_name, stream_url = stream_url)
     elif state == "offline":
         text = "{station_name} is offline.".format(station_name = station_name)
+
+    if fortune:
+        text += "\nHave a free wombot fortune: " + random.choice(wombot_fortunes.fortunecookie)
 
     try:
         if api.update_status (text):
@@ -49,6 +54,8 @@ def main():
     parser.add_argument('-o', '--offline', action="store_true", help='send tweet when station goes offline')
     parser.add_argument('-c', '--channel', type=str, help='only check these stations', default="live")
     parser.add_argument('-d', '--debug', action='store_true', help='debug mode')
+    parser.add_argument('-f', '--fortune', action='store_true', help='Add a random fortune')
+
 
     args = parser.parse_args()
 
@@ -87,7 +94,7 @@ def main():
     if not args.debug:
 
         try:
-            tweet(station_name = station['title'], stream_url=channel[1], state=state)
+            tweet(station_name = station['title'], stream_url=channel[1], state=state, fortune=args.fortune)
             # write state to config.ini
             config['DEFAULT']['last_tweeted'] = state
 

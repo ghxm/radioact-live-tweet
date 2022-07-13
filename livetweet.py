@@ -86,7 +86,7 @@ def main():
         try:
             print('Writing status to file: ' + args.writeOut + "/" + args.station + '.json')
             status = dict()
-            status = {'station_name': station['station_name'], 'stream_url': channel[1], 'status': state}
+            status = {'station': args.station, 'prettyName': station.get('title'), 'stream_url': channel[1], 'status': state}
 
             with open(args.writeOut + "/" + args.station + '.json', 'w') as outfile:
                 json.dump(status, outfile)

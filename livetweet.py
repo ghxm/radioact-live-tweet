@@ -57,7 +57,7 @@ def main():
     parser.add_argument('-c', '--channel', type=str, help='only check these stations', default="live")
     parser.add_argument('-d', '--debug', action='store_true', help='debug mode')
     parser.add_argument('-f', '--fortune', action='store_true', help='Add a random fortune')
-    parser.add_argument('-d', '--delay', type=int, help='Sleep before tweeting to make sure online is longer than x seconds')
+    parser.add_argument('-r', '--delay', type=int, help='Sleep before tweeting to make sure online is longer than x seconds')
     parser.add_argument('-w', '--writeOut', type=str, help='Write out json file to path instead of tweeting')
 
     args = parser.parse_args()

@@ -55,6 +55,8 @@ def main():
     parser.add_argument('-c', '--channel', type=str, help='only check these stations', default="live")
     parser.add_argument('-d', '--debug', action='store_true', help='debug mode')
     parser.add_argument('-f', '--fortune', action='store_true', help='Add a random fortune')
+    parser.add_argument('-w', '--writeOut', type=str, help='Write out json file to path instead of tweeting')
+
 
 
     args = parser.parse_args()
@@ -79,6 +81,19 @@ def main():
 
     state = channel[2]
 
+    if args.writeOut and not args.debug:
+
+        try:
+            print('Writing status to file: ' + args.writeOut + "/" + args.station + '.json')
+            status = dict()
+            status = {'station_name': station['station_name'], 'stream_url': channel[1], 'status': state}
+
+            with open(args.writeOut + "/" + args.station + '.json', 'w') as outfile:
+                json.dump(status, outfile)
+        except Exception as e:
+            print('Error writing status to file: ' + args.writeOut + "/" + args.station + '.json')
+            print(e)
+
     if state == config['DEFAULT']['last_tweeted']:
         print("State has not changed since last tweet")
         sys.exit(1)
@@ -94,6 +109,7 @@ def main():
     if not args.debug:
 
         try:
+
             tweet(station_name = station['title'], stream_url=channel[1], state=state, fortune=args.fortune)
             # write state to config.ini
             config['DEFAULT']['last_tweeted'] = state

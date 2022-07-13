@@ -57,7 +57,7 @@ def main():
     parser.add_argument('-c', '--channel', type=str, help='only check these stations', default="live")
     parser.add_argument('-d', '--debug', action='store_true', help='debug mode')
     parser.add_argument('-f', '--fortune', action='store_true', help='Add a random fortune')
-    parser.add_argument('-s', '--sleep', type=int, help='Sleep before tweeting to make sure online is longer than x seconds')
+    parser.add_argument('-d', '--delay', type=int, help='Sleep before tweeting to make sure online is longer than x seconds')
     parser.add_argument('-w', '--writeOut', type=str, help='Write out json file to path instead of tweeting')
 
     args = parser.parse_args()
@@ -119,8 +119,8 @@ def main():
     else:
         print('Sleeping to make sure')
         start = time.now()
-        while time.now() - start < args.sleep:
-            time.sleep(args.sleep/5)
+        while time.now() - start < args.delay:
+            time.sleep(args.delay/5)
             if getStationInfo(args.station, args.channel)['status'] != state:
                 print('State changed, exiting...')
                 sys.exit(1)

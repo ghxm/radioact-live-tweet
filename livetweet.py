@@ -118,8 +118,8 @@ def main():
         sys.exit(1)
     else:
         print('Sleeping to make sure')
-        start = time.now()
-        while time.now() - start < args.delay:
+        start = time.time()
+        while time.time() - start < args.delay:
             time.sleep(args.delay/5)
             if getStationInfo(args.station, args.channel)['status'] != state:
                 print('State changed, exiting...')

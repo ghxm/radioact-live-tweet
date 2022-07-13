@@ -124,12 +124,13 @@ def main():
             if getStationInfo(args.station, args.channel)['status'] != state:
                 print('State changed, exiting...')
                 sys.exit(1)
-            print('Sleeping done, state unchanged')
+        print('Sleeping done, state unchanged')
 
 
-    print('Tweeting: ' + str(state))
 
     if not args.debug:
+
+        print('Tweeting: ' + str(state))
 
         try:
 

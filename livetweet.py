@@ -121,7 +121,11 @@ def main():
         start = time.time()
         while time.time() - start < args.delay:
             time.sleep(args.delay/5)
-            if getStationInfo(args.station, args.channel)['status'] != state:
+            config.read(configpath)
+            if config['DEFAULT']['last_tweeted'] == state:
+                print("State has has already been tweeted, exiting")
+                sys.exit(1)
+            if (getStationInfo(args.station, args.channel)['status'] != state):
                 print('State changed, exiting...')
                 sys.exit(1)
         print('Sleeping done, state unchanged')

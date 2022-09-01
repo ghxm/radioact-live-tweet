@@ -94,7 +94,7 @@ def main():
 
     station_info = getStationInfo(args.station, args.channel)
 
-    state = station_info['status']
+    state = station_info['status'].strip()
 
     if args.writeOut and not args.debug:
 
@@ -107,14 +107,8 @@ def main():
             print('Error writing status to file: ' + args.writeOut + "/" + args.station + '.json')
             print(e)
 
-    if state == config['DEFAULT']['last_tweeted']:
+    if state == config['DEFAULT']['last_state']:
         print("State has not changed since last tweet")
-        sys.exit(1)
-    elif state == "offline" and not args.offline:
-        config['DEFAULT']['last_tweeted'] = state
-        with open(configpath[0], 'w') as configfile:
-            config.write(configfile)
-        print("Station is offline, offline tweet option is not enabled")
         sys.exit(1)
     else:
         print('Sleeping to make sure')
@@ -125,12 +119,18 @@ def main():
             if config['DEFAULT']['last_tweeted'] == state:
                 print("State has has already been tweeted, exiting")
                 sys.exit(1)
-            if (getStationInfo(args.station, args.channel)['status'] != state):
+            if (getStationInfo(args.station, args.channel)['status'] != state):git
                 print('State changed, exiting...')
                 sys.exit(1)
+        if state == "offline" and not args.offline:
+            config['DEFAULT']['last_state'] = state
+            with open(configpath[0], 'w') as configfile:
+                config.write(configfile)
+            print("Station is offline, offline tweet option is not enabled")
+            sys.exit(1)
         print('Sleeping done, state unchanged')
 
-
+    config['DEFAULT']['last_state'] = state
 
     if not args.debug:
 
@@ -142,15 +142,15 @@ def main():
             # write state to config.ini
             config['DEFAULT']['last_tweeted'] = state
 
-            print('Writing config...')
-
-            with open(configpath[0], 'w') as configfile:
-                config.write(configfile)
 
             print('All good')
         except Exception as e:
             print('Error!: ')
             print(str(e))
+
+        print('Writing config...')
+        with open(configpath[0], 'w') as configfile:
+            config.write(configfile)
 
 
 if __name__ == "__main__":

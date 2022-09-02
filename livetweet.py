@@ -119,7 +119,7 @@ def main():
             if config['DEFAULT']['last_tweeted'] == state:
                 print("State has has already been tweeted, exiting")
                 sys.exit(1)
-            if (getStationInfo(args.station, args.channel)['status'] != state):git
+            if (getStationInfo(args.station, args.channel)['status'] != state):
                 print('State changed, exiting...')
                 sys.exit(1)
         if state == "offline" and not args.offline:

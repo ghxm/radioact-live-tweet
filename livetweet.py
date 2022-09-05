@@ -116,7 +116,7 @@ def main():
         while time.time() - start < args.delay:
             time.sleep(args.delay/5)
             config.read(configpath)
-            if config['DEFAULT']['last_tweeted'] == state and config['DEFAULT']['last_tweeted'] == state:
+            if config['DEFAULT']['last_tweeted'] == state and config['DEFAULT']['last_state'] == state:
                 print("State has has already been tweeted, exiting")
                 sys.exit(1)
             if (getStationInfo(args.station, args.channel)['status'] != state):
